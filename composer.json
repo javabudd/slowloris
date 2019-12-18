@@ -1,0 +1,10 @@
+{
+  "name": "javabudd/slowloris",
+  "require": {
+    "ext-curl": "*",
+    "ext-sockets" :"*"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
+  }
+}
