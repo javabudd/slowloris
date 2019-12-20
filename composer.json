@@ -1,7 +1,6 @@
 {
   "name": "javabudd/slowloris",
   "require": {
-    "ext-curl": "*",
     "ext-sockets" :"*"
   },
   "require-dev": {

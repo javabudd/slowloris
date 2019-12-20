@@ -61,14 +61,10 @@ function initSocket(string $hostname, ?int $port = 80)
     \socket_connect($socket, \gethostbyname($hostname), $port);
 
     $userAgent = getRandomUserAgent();
-    $message   = <<<RAW
-GET / HTTP/1.1
-Host: $hostname
-User-Agent: $userAgent
-Content-Length: 42
-Accept-Language: en-US,en,q=0.5
-
-RAW;
+    $message   = "GET / HTTP/1.1\r\n";
+    $message .= "Host: $hostname\r\n";
+    $message .= "User-Agent: $userAgent\r\n";
+    $message .= "Accept-Language: en-US,en,q=0.5\r\n";
 
     \socket_write($socket, $message, \strlen($message));
 
