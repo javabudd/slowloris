@@ -33,7 +33,7 @@ $port        = $argv[2] ?? null;
 $socketCount = $argv[3] ?? 150;
 $timeout     = $argv[4] ?? 10;
 
-if (!$hostname || !$port) {
+if (!$hostname && !$port) {
     echo 'usage: php slowloris.php hostname port [socketCount] [timeout]' . PHP_EOL;
     die;
 }
