@@ -30,11 +30,27 @@ const USER_AGENTS = [
 
 $hostname    = $argv[1] ?? null;
 $port        = $argv[2] ?? null;
-$socketCount = 150;
-$timeout     = 10;
+$socketCount = $argv[3] ?? 150;
+$timeout     = $argv[4] ?? 10;
 
-if (!$hostname) {
-    exit('Argument 1 must be a hostname');
+if (!$hostname || !$port) {
+    echo 'usage: php slowloris.php hostname port [socketCount] [timeout]' . PHP_EOL;
+    die;
+}
+
+if (!is_numeric($port)) {
+    echo 'Port must be numeric' . PHP_EOL;
+    die;
+}
+
+if (!is_numeric($socketCount)) {
+    echo 'Socket count must be numeric' . PHP_EOL;
+    die;
+}
+
+if (!is_numeric($timeout)) {
+    echo 'Timeout must be numeric' . PHP_EOL;
+    die;
 }
 
 function getRandomUserAgent(): string
