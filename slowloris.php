@@ -81,8 +81,19 @@ function initSocket(string $hostname, ?int $port = 80)
     return $socket;
 }
 
+$isActive = true;
+$callback = static function () use (&$isActive) {
+    echo 'Gracefully shutting down...' . PHP_EOL;
+
+    $isActive = false;
+};
+
+\pcntl_async_signals(true);
+\pcntl_signal(SIGINT, $callback);
+\pcntl_signal(SIGTERM, $callback);
+
 $listOfSockets = [];
-while (true) {
+while ($isActive) {
     $activeCount = ($socketCount - \count($listOfSockets));
 
     echo 'Building sockets...' . PHP_EOL;

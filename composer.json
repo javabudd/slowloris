@@ -1,6 +1,7 @@
 {
   "name": "javabudd/slowloris",
   "require": {
+    "ext-pcntl" :"*",
     "ext-sockets" :"*",
     "php": "^7.2"
   },
