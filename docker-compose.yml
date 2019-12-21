@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  php:
-    image: javabudd/slowloris:1.0.0
+  slowloris:
+    image: javabudd/slowloris
     ulimits:
       nproc: 65535
       nofile:
