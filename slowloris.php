@@ -77,11 +77,12 @@ function registerSignals(bool &$isActive): void
     };
 
     \pcntl_async_signals(true);
-    \pcntl_signal(SIGINT, $callback);
-    \pcntl_signal(SIGTERM, $callback);
+    \pcntl_signal(\SIGINT, $callback);
+    \pcntl_signal(\SIGTERM, $callback);
+    \pcntl_signal(\SIGUSR1, $callback);
 }
 
-function loop(string $hostname, int $port, int $socketCount, int $timeout, bool $isActive): void
+function loop(string $hostname, int $port, int $socketCount, int $timeout, bool &$isActive): void
 {
     $listOfSockets = [];
     while ($isActive) {
