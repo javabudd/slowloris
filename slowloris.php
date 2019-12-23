@@ -9,18 +9,20 @@ registerSignals($listOfSockets);
 
 $futures  = [];
 
-do {
-    for ($i = 1; $i < $threadCount + 1; $i++) {
-        echo "Starting thread $i..." . PHP_EOL;
+for ($i = 1; $i < $threadCount + 1; $i++) {
+    echo "Starting thread $i..." . PHP_EOL;
 
-        $runtime   = new \parallel\Runtime();
-        $futures[] = $runtime->run(static function() use ($hostname, $port, $socketCount, $timeout, $listOfSockets) {
-            include __DIR__ . '/functions.php.inc';
+    $runtime   = new \parallel\Runtime();
+    $futures[] = $runtime->run(static function() use ($hostname, $port, $socketCount, $timeout, $listOfSockets) {
+        include __DIR__ . '/functions.php.inc';
 
-            flood($hostname, $port, $socketCount, $timeout, $listOfSockets);
-        });
+        flood($hostname, $port, $socketCount, $timeout, $listOfSockets);
+    });
+}
+
+while (\count($futures) > 0) {
+    foreach ($futures as $future) {
+        $future->done();
     }
-
-    waitForFutures($futures, $threadCount);
-} while (\count($futures) > 0);
+}
 
