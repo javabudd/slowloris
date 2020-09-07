@@ -4,7 +4,7 @@
     "ext-parallel": "*",
     "ext-pcntl" :"*",
     "ext-sockets" :"*",
-    "php": "^7.2"
+    "php": "^7.4"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master"
