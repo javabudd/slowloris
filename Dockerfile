@@ -1,7 +1,7 @@
 FROM php:7.4-zts
 
 # Install and enable parallel
-RUN pecl install parallel-beta && \
+RUN pecl install parallel && \
     echo 'extension=parallel' >> /usr/local/etc/php/conf.d/parallel.ini
 
 # Install and enable sockets
